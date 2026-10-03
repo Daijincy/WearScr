@@ -1,0 +1,6 @@
+[submodule "external/adb-mobile/android-tools"]
+	path = external/adb-mobile/android-tools
+	url = https://github.com/nmeum/android-tools.git
+[submodule "external/adb-mobile/ios-cmake"]
+	path = external/adb-mobile/ios-cmake
+	url = https://github.com/leetal/ios-cmake.git
