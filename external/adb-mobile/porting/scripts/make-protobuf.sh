@@ -25,7 +25,7 @@ echo "→ Copying CMakeLists.txt...";
 cp "$SOURCE_ROOT/porting/cmake/CMakeLists.protobuf.txt" "$SOURCE_ROOT/external/protobuf/CMakeLists.txt"
 
 echo "→ Running cmake...";
-cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE="$CMAKE_TOOLCHAIN_FILE" -DPLATFORM="$PLATFORM" \
+cmake .. -G Xcode -DBUILD_TESTING=OFF -Dprotobuf_BUILD_TESTS=OFF -DABSL_BUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE="$CMAKE_TOOLCHAIN_FILE" -DPLATFORM="$PLATFORM" \
 	-DDEPLOYMENT_TARGET="$DEPLOYMENT_TARGET" $CMAKE_COMPAT_FLAGS
 
 # Hack files
