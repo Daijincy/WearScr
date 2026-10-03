@@ -2,7 +2,7 @@
 
 . "$(dirname $0)/defines.sh";
 
-cmake_root=$SOURCE_ROOT/external/lz4/contrib/cmake_unofficial/out;
+cmake_root=$SOURCE_ROOT/external/lz4/build/cmake/out;
 
 # Clean built products
 [[ -d "$cmake_root" ]] && rm -rfv "$cmake_root";

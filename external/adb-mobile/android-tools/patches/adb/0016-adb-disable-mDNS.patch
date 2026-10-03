@@ -1,0 +1,65 @@
+From fc5b0a99f01b0d0577382caa02ade8b1b24f0499 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C4=90o=C3=A0n=20Tr=E1=BA=A7n=20C=C3=B4ng=20Danh?=
+ <congdanhqx@gmail.com>
+Date: Sun, 1 Nov 2020 15:51:35 +0700
+Subject: [PATCH] adb: disable mDNS
+
+---
+ adb.cpp                | 2 ++
+ client/commandline.cpp | 4 ++++
+ socket_spec.cpp        | 4 +++-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/adb.cpp b/adb.cpp
+index a4794e9..e23d4a3 100644
+--- a/adb.cpp
++++ b/adb.cpp
+@@ -1257,6 +1257,7 @@ bool is_usb_enabled() {
+ }
+ 
+ static bool handle_mdns_request(std::string_view service, int reply_fd) {
++#if ADB_MDNS
+     if (!android::base::ConsumePrefix(&service, "mdns:")) {
+         return false;
+     }
+@@ -1271,6 +1272,7 @@ static bool handle_mdns_request(std::string_view service, int reply_fd) {
+         SendOkay(reply_fd, services_list);
+         return true;
+     }
++#endif
+ 
+     return false;
+ }
+diff --git a/client/commandline.cpp b/client/commandline.cpp
+index 4f43fb9..0e77793 100644
+--- a/client/commandline.cpp
++++ b/client/commandline.cpp
+@@ -1950,6 +1950,10 @@ int adb_commandline(int argc, const char** argv) {
+         ReadOrderlyShutdown(fd);
+         return 0;
+     } else if (!strcmp(argv[0], "mdns")) {
++#if !ADB_MDNS
++        error_exit("mdns is not supported by this version of adb.");
++#endif
++
+         --argc;
+         if (argc < 1) error_exit("mdns requires an argument");
+         ++argv;
+diff --git a/socket_spec.cpp b/socket_spec.cpp
+index 391bfdb..da9f100 100644
+--- a/socket_spec.cpp
++++ b/socket_spec.cpp
+@@ -228,7 +228,9 @@ bool socket_spec_connect(unique_fd* fd, std::string_view address, int* port,
+         if (tcp_host_is_local(hostname)) {
+             fd->reset(network_loopback_client(port_value, SOCK_STREAM, error));
+         } else {
+-#if ADB_HOST
++#if !ADB_MDNS
++            fd->reset(network_connect(hostname, port_value, SOCK_STREAM, 0, error));
++#elif ADB_HOST
+             // Check if the address is an mdns service we can connect to.
+             if (auto mdns_info = mdns_get_connect_service_info(std::string(address.substr(4)));
+                 mdns_info != std::nullopt) {
+-- 
+2.55.0
+

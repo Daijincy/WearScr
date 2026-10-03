@@ -1,0 +1,22 @@
+name: tvos-jobs
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    types: [ opened, synchronize ]
+
+jobs:
+  build_with_16_4_TVOS:
+    name: "Xcode version 16.4, Target tvOS [arm64] Target SDK 14.0"
+    runs-on: macos-15
+    env:
+      PLATFORM: TVOS
+      DEPLOYMENT_TARGET: 14.0
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.4'
+    - name: Build
+      run: ./.github/build.sh
