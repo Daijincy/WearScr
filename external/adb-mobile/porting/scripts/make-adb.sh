@@ -19,6 +19,17 @@ done
 # Now update submodules
 echo "→ Updating submodules...";
 (cd "$SOURCE_ROOT/android-tools" && git submodule update --init --recursive --force)
+# Patch: 修复新版 android-tools 缺失 CHECK_LOOPER_THREAD 宏
+echo "→ Patching CHECK_LOOPER_THREAD...";
+types_h="$SOURCE_ROOT/android-tools/vendor/adb/types.h"
+if [ -f "$types_h" ] && ! grep -q "define CHECK_LOOPER_THREAD" "$types_h"; then
+    python3 -c "
+p='$types_h'
+s=open(p).read()
+open(p,'w').write('#ifndef CHECK_LOOPER_THREAD\n#define CHECK_LOOPER_THREAD()\n#endif\n'+s)
+"
+fi
+
 
 # Clean and create build directory AFTER git operations
 [[ -d "$cmake_root" ]] && rm -rfv "$cmake_root";
