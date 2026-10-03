@@ -20,7 +20,7 @@ jobs:
           # protobuf 必须 28.3（adb-mobile 硬依赖），本地 formula 需先建 tap
           brew tap-new local/tap
           cp external/adb-mobile/porting/protobuf.rb "$(brew --repository)/Library/Taps/local/homebrew-tap/Formula/protobuf.rb"
-          brew install local/tap/protobuf
+          brew install local/tap/protobuf --build-from-source
           brew link --overwrite protobuf
           protoc --version
 
