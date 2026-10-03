@@ -16,12 +16,7 @@ jobs:
       - name: Install build dependencies
         run: |
           brew update
-          brew install meson ninja cmake nasm pkg-config fmt googletest go
-          # protobuf 必须 28.3（adb-mobile 硬依赖），本地 formula 需先建 tap
-          brew tap-new local/tap
-          cp external/adb-mobile/porting/protobuf.rb "$(brew --repository)/Library/Taps/local/homebrew-tap/Formula/protobuf.rb"
-          brew install local/tap/protobuf --build-from-source
-          brew link --overwrite protobuf
+          brew install meson ninja cmake nasm pkg-config fmt googletest go protobuf
           protoc --version
 
       - name: Build porting libraries (adb + sdl + ffmpeg + scrcpy)

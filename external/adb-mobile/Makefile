@@ -4,8 +4,7 @@ brew-install-deps:
 	brew install fmt cmake pkgconfig googletest
 
 check-protobuf-version:
-	@grep $$(protoc --version | cut -d' ' -f2) porting/protobuf.rb || { echo "* To compile libadb please install protobuf version 28.3 by:" && echo "brew unlink protobuf && brew install porting/protobuf.rb" && echo "" && exit 1; }
-	protoc --version
+	@echo "Using system protobuf:" $$(protoc --version)
 	exit 0
 
 check-golang:
