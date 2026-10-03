@@ -17,13 +17,8 @@ which protoc || {
 protoc_version=$(protoc --version | cut -d' ' -f2);
 echo "→ Using protobuf v$protoc_version";
 
-# Switch to version
-echo "→ Checking out protobuf v$protoc_version...";
-(cd "$SOURCE_ROOT/external/protobuf" && git clean -f && git checkout "v$protoc_version" && git submodule update --init --recursive)
-
-# Fix absl version
-echo "→ Fixing abseil-cpp version...";
-(cd "$SOURCE_ROOT/external/protobuf/third_party/abseil-cpp" && git checkout 20240722.0)
+# 使用当前 clone 的 protobuf 代码（跳过版本切换）
+echo "→ Using existing protobuf source (skipping checkout)";
 
 # Copy CMakeLists.txt to source folder
 echo "→ Copying CMakeLists.txt...";
