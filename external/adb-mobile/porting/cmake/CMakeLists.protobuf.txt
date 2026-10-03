@@ -60,6 +60,14 @@ foreach(src IN LISTS protobuf_srcs)
         message(STATUS "- ${src}")
 endforeach()
 
+
+# 过滤掉测试/基准/示例文件（避免 gtest 依赖）
+list(FILTER protobuf_srcs EXCLUDE REGEX ".*test.*")
+list(FILTER protobuf_srcs EXCLUDE REGEX ".*mock.*")
+list(FILTER protobuf_srcs EXCLUDE REGEX ".*benchmark.*")
+list(FILTER protobuf_srcs EXCLUDE REGEX ".*sample.*")
+list(FILTER protobuf_srcs EXCLUDE REGEX ".*_example.*")
+
 add_library(protobuf STATIC
         ${protobuf_srcs}
         )
