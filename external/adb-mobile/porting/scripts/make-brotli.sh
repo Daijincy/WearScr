@@ -16,7 +16,7 @@ cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE="$CMAKE_TOOLCHAIN_FILE" -DPLATFORM="$PL
 
 echo "→ Building...";
 cmake --build . --config Debug --parallel 8 \
-	--target brotlidec-static --target brotlienc-static --target brotlicommon-static
+	--target brotlidec --target brotlienc --target brotlicommon
 
 echo "→ Copying output...";
 find . -name "*.a" -exec cp -av {} "$FULL_OUTPUT" \;
